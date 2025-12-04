@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心力研习社 | 神经-躯体能量审计</title>
+    <!-- 引入 Tailwind CSS (样式库) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 核心修复：按顺序引入指定版本的库 -->
+    <!-- 1. 引入 React 核心 (v18.2.0) -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <!-- 2. 引入 React DOM (v18.2.0) -->
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <!-- 3. 引入 Prop-types (Recharts 的潜在依赖) -->
+    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
+    <!-- 4. 引入 Recharts (锁定 v2.10.3 稳定版，修复 ForwardRef 错误) -->
+    <script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
+    <!-- 5. 引入 Babel (用于解析 React 代码) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* 自定义动画样式 */
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scale-up { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .animate-fade-in { animation: fade-in 0.4s ease-out; }
+        .animate-slide-up { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .animate-scale-up { animation: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        /* 解决移动端点击高亮问题 */
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0f172a; color: #f1f5f9; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        // 确保 Recharts 对象存在后再解构，处理可能的全局变量挂载差异
+        const { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } = window.Recharts || Recharts;
+
+        // 图标组件 (SVG)
+        const Icons = {
+            Brain: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+            Battery: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/></svg>,
+            Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+            Shield: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>,
+            Activity: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
+            ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+            Play: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+            CheckCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+            Share2: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>,
+            X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+            Copy: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>,
+            Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        };
+
+        const HeartForceApp = () => {
+            const [step, setStep] = useState('intro'); 
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [showSectionIntro, setShowSectionIntro] = useState(false);
+            const [showContactModal, setShowContactModal] = useState(false);
+            const [copied, setCopied] = useState(false);
+
+            // 题目配置
+            const questions = [
+                { id: 1, dimension: 'cognitive', sectionTitle: "第一部分：中枢指挥系统检测", sectionDesc: "评估前额叶皮层(PFC)的算力储备与类淋巴系统的清洗效率。", text: "早晨醒来后，你是否经常感到“脑雾”（Brain Fog），即便睡眠时间足够，大脑依然无法立刻清晰运转？", subtext: "神经指标：类淋巴系统代谢废物清除率" },
+                { id: 2, dimension: 'cognitive', text: "在处理复杂工作时，你是否发现自己很难维持超过25分钟的深度专注，很容易被弹窗或噪音打断？", subtext: "神经指标：背外侧前额叶(DLPFC)抑制功能" },
+                { id: 3, dimension: 'cognitive', text: "每天下午3-4点，你是否会经历剧烈的“认知崩溃”，感觉意志力彻底耗尽，无法再做任何决策？", subtext: "神经指标：脑葡萄糖代谢与自我损耗阈值" },
+                { id: 4, dimension: 'cognitive', text: "面临多个选项时，你是否经常陷入“决策瘫痪”，花费不成比例的时间去纠结？", subtext: "神经指标：腹内侧前额叶(VMPFC)价值整合效率" },
+                { id: 5, dimension: 'cognitive', text: "你是否经常感觉大脑像“过热的CPU”，明明很累却停不下来，睡前思绪纷飞难以入睡？", subtext: "神经指标：默认模式网络(DMN)过度活跃" },
+                { id: 6, dimension: 'drive', sectionTitle: "第二部分：动力引擎系统检测", sectionDesc: "评估多巴胺回路的敏感度与预测误差管理机制。", text: "你是否设定了很多目标，但绝大多数都卡在“第一步”，总感觉启动阻力巨大？", subtext: "神经指标：多巴胺基线水平与启动阈值" },
+                { id: 7, dimension: 'drive', text: "在刷短视频或资讯流时，你是否很难停下来，尽管内容并没有那么有趣，手指却在机械性滑动？", subtext: "神经指标：多巴胺奖赏回路的“成瘾性劫持”" },
+                { id: 8, dimension: 'drive', text: "完成一项高难度任务后，你的第一反应是“终于解脱了/好累”，而不是“太棒了/有成就感”？", subtext: "神经指标：正向预测误差(RPE)反馈缺失" },
+                { id: 9, dimension: 'drive', text: "你是否经常报复性熬夜，明知该睡了，却还在试图通过娱乐抓取最后一点“快乐”？", subtext: "神经指标：多巴胺代偿性寻求行为" },
+                { id: 10, dimension: 'drive', text: "对于需要长期努力才能获得回报的事（如健身、学习），你是否极难保持耐心，总想快速看到结果？", subtext: "神经指标：延迟满足能力" },
+                { id: 11, dimension: 'intuition', sectionTitle: "第三部分：身心雷达系统检测", sectionDesc: "评估内受觉(Interoception)精度与躯体标记信号。", text: "在忙碌时，你是否经常完全忽略身体的信号，直到饿得胃痛或憋尿很久才察觉？", subtext: "神经指标：内受觉(Interoception)迟钝" },
+                { id: 12, dimension: 'intuition', text: "当需要做直觉判断时，你是否感觉“心里没底”，完全听不到内心的声音，只能依赖逻辑列优缺点？", subtext: "神经指标：躯体标记(Somatic Marker)信号微弱" },
+                { id: 13, dimension: 'intuition', text: "你是否很难准确描述当下的情绪？（例如分不清是“焦虑”、“恐惧”还是“兴奋”，只觉得“难受”）", subtext: "神经指标：情绪粒度与岛叶(Insula)功能" },
+                { id: 14, dimension: 'intuition', text: "在压力巨大时，你是否会感觉身体“僵住”了，或者感觉自己像在看电影一样抽离（解离感）？", subtext: "神经指标：背侧迷走神经防御反应" },
+                { id: 15, dimension: 'intuition', text: "你是否经常出现查不出病因的躯体症状（如紧张性头痛、肠胃功能紊乱）？", subtext: "神经指标：身心断联与躯体化症状" },
+                { id: 16, dimension: 'immunity', sectionTitle: "第四部分：防御免疫系统检测", sectionDesc: "评估镜像神经元边界与迷走神经张力(HRV)。", text: "当身边的同事或家人情绪焦虑/愤怒时，你是否会瞬间被“传染”，感到胸闷或心慌？", subtext: "神经指标：镜像神经元过度活跃" },
+                { id: 17, dimension: 'immunity', text: "在经历一场冲突或突发压力后，你通常需要多久才能让心跳平复并恢复冷静？（选“总是”代表需要很久）", subtext: "神经指标：心率变异性(HRV)" },
+                { id: 18, dimension: 'immunity', text: "你是否经常在深夜反复回想白天发生的尴尬或冲突细节，陷入反刍思维无法自拔？", subtext: "神经指标：情绪残留与杏仁核过度激活" },
+                { id: 19, dimension: 'immunity', text: "在社交场合，你是否需要消耗巨大的能量去“察言观色”或维持假笑，导致回家后只想独处？", subtext: "神经指标：情绪劳动(Emotional Labor)负荷" },
+                { id: 20, dimension: 'immunity', text: "面对突发的变化或坏消息，你的第一反应通常是恐慌/崩溃，而不是“好吧，看看怎么解决”？", subtext: "神经指标：心理韧性与神经系统弹性" }
+            ];
+
+            const options = [
+                { value: 1, label: "几乎从不 (10%以下)" },
+                { value: 2, label: "偶尔发生 (30%左右)" },
+                { value: 3, label: "有时发生 (50%左右)" },
+                { value: 4, label: "经常发生 (70%左右)" },
+                { value: 5, label: "几乎总是 (90%以上)" }
+            ];
+
+            // 监听题目变化以显示板块介绍
+            useEffect(() => {
+                if (step === 'quiz') {
+                    const q = questions[currentQuestion];
+                    if (currentQuestion === 0 || questions[currentQuestion - 1].dimension !== q.dimension) {
+                        setShowSectionIntro(true);
+                    }
+                }
+            }, [currentQuestion, step]);
+
+            const handleAnswer = (value) => {
+                setAnswers({ ...answers, [questions[currentQuestion].dimension]: (answers[questions[currentQuestion].dimension] || 0) + value });
+                if (currentQuestion < questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    setStep('analyzing');
+                    setTimeout(() => setStep('result'), 2500);
+                }
+            };
+
+            const calculateScores = () => {
+                const raw = { cognitive: answers.cognitive || 0, drive: answers.drive || 0, intuition: answers.intuition || 0, immunity: answers.immunity || 0 };
+                const normalize = (val) => Math.round(Math.max(0, 100 - ((val - 5) / 20) * 100));
+                return {
+                    cognitive: normalize(raw.cognitive),
+                    drive: normalize(raw.drive),
+                    intuition: normalize(raw.intuition),
+                    immunity: normalize(raw.immunity),
+                    total: Math.round((normalize(raw.cognitive) + normalize(raw.drive) + normalize(raw.intuition) + normalize(raw.immunity)) / 4)
+                };
+            };
+
+            const scores = step === 'result' ? calculateScores() : null;
+
+            const getLevel = (score) => {
+                if (score >= 85) return { title: "神经系统：卓越态", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/50", desc: "心力如精密仪器般运转，具备极强抗压与创造潜能。" };
+                if (score >= 70) return { title: "神经系统：平衡态", color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/50", desc: "功能正常，但代偿机制正在掩盖隐形损耗。" };
+                if (score >= 50) return { title: "神经系统：警戒态", color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/50", desc: "前额叶与自主神经系统处于“过热”边缘，效率下降。" };
+                return { title: "神经系统：耗竭态", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/50", desc: "多巴胺劫持与皮质醇浸泡，心力接近“死机”，急需重启。" };
+            };
+
+            const getAdvice = (dim, score) => {
+                if (score > 80) return "状态良好，尝试挑战更高难度任务。";
+                if (dim === 'cognitive') return "建议：前额叶疲劳。需增加深度睡眠并尝试NSDR，重启类淋巴排毒系统。";
+                if (dim === 'drive') return "建议：多巴胺受体脱敏。建议48小时“多巴胺斋戒”，降低预测误差阈值。";
+                if (dim === 'intuition') return "建议：身心信号阻断。每日3次内受觉扫描，重建岛叶连接。";
+                if (dim === 'immunity') return "建议：交感神经过载。使用生理叹息呼吸法，激活迷走神经刹车。";
+            };
+
+            const handleCopy = () => {
+                // 简单的复制 fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = "Martinzhang1983";
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    alert('复制失败，请手动输入');
+                }
+                document.body.removeChild(textArea);
+            };
+
+            return (
+                <div className="max-w-md mx-auto min-h-screen flex flex-col relative bg-[#0f172a] text-slate-100 overflow-hidden">
+                     {/* 背景光效 */}
+                    <div className="fixed inset-0 pointer-events-none">
+                        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[80px]"></div>
+                        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[80px]"></div>
+                    </div>
+
+                    {/* 顶部导航 */}
+                    <div className="relative z-10 p-4 flex justify-between items-center border-b border-slate-800 bg-[#0f172a]/90 backdrop-blur">
+                        <div className="flex items-center gap-2 text-purple-400 font-bold tracking-wide">
+                            <Icons.Brain /> 心力研习社
+                        </div>
+                        {step === 'quiz' && <span className="text-xs text-slate-400 font-mono">{currentQuestion + 1}/{questions.length}</span>}
+                    </div>
+
+                    <div className="flex-1 p-6 relative z-10 flex flex-col">
+                        
+                        {/* 首页 */}
+                        {step === 'intro' && (
+                            <div className="my-auto space-y-8 animate-fade-in">
+                                <div className="space-y-4">
+                                    <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs">
+                                        <Icons.Activity /> 专业版测评
+                                    </div>
+                                    <h1 className="text-4xl font-bold bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent leading-tight">
+                                        神经-躯体<br/>心力能量审计
+                                    </h1>
+                                    <p className="text-slate-400 text-sm">基于前额叶、多巴胺与迷走神经理论的深度评估。</p>
+                                </div>
+                                <button onClick={() => setStep('quiz')} className="w-full py-4 bg-purple-600 rounded-xl font-bold text-lg shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                    开始全系统扫描 <Icons.Play />
+                                </button>
+                            </div>
+                        )}
+
+                        {/* 答题页 */}
+                        {step === 'quiz' && (
+                            <div className="flex-1 flex flex-col relative">
+                                <div className="w-full bg-slate-800 h-1.5 rounded-full mb-6">
+                                    <div className="bg-purple-500 h-full transition-all duration-300" style={{width: `${(currentQuestion+1)/questions.length*100}%`}}></div>
+                                </div>
+                                
+                                {showSectionIntro ? (
+                                    <div className="absolute inset-0 bg-[#0f172a] z-20 flex flex-col justify-center items-center text-center animate-fade-in space-y-6">
+                                        <div className="p-4 rounded-full bg-slate-800 border border-slate-700">
+                                            {questions[currentQuestion].dimension === 'cognitive' ? <div className="text-yellow-400"><Icons.Brain /></div> :
+                                             questions[currentQuestion].dimension === 'drive' ? <div className="text-purple-400"><Icons.Zap /></div> :
+                                             questions[currentQuestion].dimension === 'intuition' ? <div className="text-blue-400"><Icons.Activity /></div> :
+                                             <div className="text-emerald-400"><Icons.Shield /></div>}
+                                        </div>
+                                        <div>
+                                            <h2 className="text-xl font-bold text-white mb-2">{questions[currentQuestion].sectionTitle}</h2>
+                                            <p className="text-sm text-slate-400 px-8">{questions[currentQuestion].sectionDesc}</p>
+                                        </div>
+                                        <button onClick={() => setShowSectionIntro(false)} className="px-8 py-2 bg-slate-800 border border-slate-700 rounded-full flex gap-2 items-center hover:bg-slate-700">
+                                            开始检测 <Icons.ArrowRight />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex flex-col animate-slide-up">
+                                        <div className="mb-6 space-y-2">
+                                            <span className="text-xs font-bold text-purple-400 uppercase tracking-widest">{questions[currentQuestion].dimension}</span>
+                                            <h2 className="text-xl font-medium text-white leading-relaxed">{questions[currentQuestion].text}</h2>
+                                            <div className="inline-block px-3 py-1 bg-slate-800/50 rounded border border-slate-700/50 text-xs text-slate-400">
+                                                {questions[currentQuestion].subtext}
+                                            </div>
+                                        </div>
+                                        <div className="space-y-3 mt-auto pb-6">
+                                            {options.map(opt => (
+                                                <button key={opt.value} onClick={() => handleAnswer(opt.value)} className="w-full p-4 bg-slate-800/50 border border-slate-700 hover:border-purple-500 hover:bg-slate-800 rounded-xl text-left text-sm text-slate-300 transition-colors flex justify-between group active:scale-[0.98]">
+                                                    {opt.label}
+                                                    <div className="w-4 h-4 rounded-full border border-slate-600 group-hover:border-purple-500 group-hover:bg-purple-500"></div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* 分析页 */}
+                        {step === 'analyzing' && (
+                            <div className="flex-1 flex flex-col justify-center items-center space-y-6 animate-pulse">
+                                <div className="text-purple-500 animate-bounce"><Icons.Brain /></div>
+                                <div className="text-center space-y-2">
+                                    <h3 className="text-xl font-bold">正在生成神经图谱...</h3>
+                                    <p className="text-xs text-slate-500 font-mono">整合多巴胺回路数据...</p>
+                                    <p className="text-xs text-slate-500 font-mono">计算迷走神经张力...</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 结果页 */}
+                        {step === 'result' && scores && (
+                            <div className="animate-fade-in pb-12">
+                                <div className={`p-6 rounded-2xl border ${getLevel(scores.total).border} ${getLevel(scores.total).bg} text-center mb-6`}>
+                                    <div className="text-xs text-slate-400 uppercase tracking-widest mb-1">Heart Force Index</div>
+                                    <div className="text-5xl font-bold text-white mb-2">{scores.total} <span className="text-lg text-slate-500 font-normal">/100</span></div>
+                                    <div className={`text-lg font-bold ${getLevel(scores.total).color}`}>{getLevel(scores.total).title}</div>
+                                </div>
+
+                                <div className="h-64 w-full mb-6 relative -left-4">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
+                                            { subject: '认知', A: scores.cognitive, fullMark: 100 },
+                                            { subject: '驱动', A: scores.drive, fullMark: 100 },
+                                            { subject: '直觉', A: scores.intuition, fullMark: 100 },
+                                            { subject: '免疫', A: scores.immunity, fullMark: 100 },
+                                        ]}>
+                                            <PolarGrid stroke="#334155" />
+                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                            <Radar name="HeartForce" dataKey="A" stroke="#8b5cf6" strokeWidth={3} fill="#8b5cf6" fillOpacity={0.4} />
+                                        </RadarChart>
+                                    </ResponsiveContainer>
+                                </div>
+
+                                <div className="space-y-4 mb-8">
+                                    <h3 className="text-xs font-bold text-slate-400 uppercase flex items-center gap-2"><Icons.Activity /> 维度解析</h3>
+                                    {Object.keys(scores).filter(k=>k!=='total').map(key => (
+                                        <div key={key} className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                                            <div className="flex justify-between mb-2">
+                                                <span className="font-bold text-slate-200 capitalize">{key === 'cognitive' ? '认知控制' : key === 'drive' ? '内在驱动' : key === 'intuition' ? '直觉导航' : '情绪免疫'}</span>
+                                                <span className={`font-mono ${scores[key] < 60 ? 'text-red-400' : 'text-emerald-400'}`}>{scores[key]}分</span>
+                                            </div>
+                                            <div className="text-xs text-slate-400 leading-relaxed pl-2 border-l-2 border-purple-500">
+                                                {getAdvice(key, scores[key])}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="bg-gradient-to-b from-purple-900/40 to-slate-900 border border-purple-500/30 rounded-2xl p-6 text-center space-y-4">
+                                    <h3 className="text-lg font-bold text-white">需要重塑你的“心力模型”？</h3>
+                                    <p className="text-xs text-slate-300">为您定制的《21天心力神经重塑计划》已就绪。</p>
+                                    <button onClick={() => setShowContactModal(true)} className="w-full py-3 bg-white text-purple-900 font-bold rounded-lg shadow-lg hover:bg-slate-100 transition-colors">
+                                        获取详细修复方案
+                                    </button>
+                                    <button onClick={() => alert("请截图本页并分享给朋友")} className="w-full flex items-center justify-center gap-2 text-xs text-slate-500 mt-2">
+                                        <Icons.Share2 /> 保存报告并分享
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 弹窗 */}
+                    {showContactModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-sm animate-fade-in">
+                            <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm relative animate-scale-up">
+                                <button onClick={() => setShowContactModal(false)} className="absolute top-4 right-4 text-slate-500"><Icons.X /></button>
+                                <div className="text-center space-y-4">
+                                    <div className="w-12 h-12 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto"><Icons.CheckCircle /></div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-white">获取定制方案</h3>
+                                        <p className="text-sm text-slate-400 mt-1">添加微信发送 <span className="text-purple-400 font-bold">“心力报告”</span></p>
+                                    </div>
+                                    <div className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
+                                        <span className="font-mono text-lg font-bold text-slate-200 ml-2">Martinzhang1983</span>
+                                        <button onClick={handleCopy} className={`p-2 rounded ${copied ? 'bg-green-500/20 text-green-400' : 'bg-slate-700 text-white'}`}>
+                                            {copied ? <Icons.Check /> : <Icons.Copy />}
+                                        </button>
+                                    </div>
+                                    {copied && <p className="text-xs text-green-400">已复制！请打开微信添加好友</p>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<HeartForceApp />);
+    </script>
+</body>
+</html>
