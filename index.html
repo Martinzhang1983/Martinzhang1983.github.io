@@ -2,341 +2,606 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>心力研习社 | 神经-躯体能量审计</title>
-    <!-- 引入 Tailwind CSS (样式库) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R.N.G.M.E.E. 全系统睡眠效能测评 | 功能医学架构师</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 核心修复：按顺序引入指定版本的库 -->
-    <!-- 1. 引入 React 核心 (v18.2.0) -->
-    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <!-- 2. 引入 React DOM (v18.2.0) -->
-    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <!-- 3. 引入 Prop-types (Recharts 的潜在依赖) -->
-    <script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
-    <!-- 4. 引入 Recharts (锁定 v2.10.3 稳定版，修复 ForwardRef 错误) -->
-    <script src="https://unpkg.com/recharts@2.10.3/umd/Recharts.js"></script>
-    <!-- 5. 引入 Babel (用于解析 React 代码) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* 自定义动画样式 */
-        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scale-up { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .animate-fade-in { animation: fade-in 0.4s ease-out; }
-        .animate-slide-up { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .animate-scale-up { animation: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
         
-        /* 解决移动端点击高亮问题 */
-        * { -webkit-tap-highlight-color: transparent; }
-        body { background-color: #0f172a; color: #f1f5f9; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+        }
+
+        .dimension-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .dimension-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .dimension-card.active {
+            border-left-color: #3b82f6;
+        }
+
+        .checkbox-wrapper input:checked + div {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+
+        .checkbox-wrapper input:checked + div .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .result-card {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="min-h-screen flex flex-col">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        // 确保 Recharts 对象存在后再解构，处理可能的全局变量挂载差异
-        const { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } = window.Recharts || Recharts;
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-dna text-blue-600 text-xl"></i>
+                <h1 class="font-bold text-lg text-slate-800">深度睡眠优化师</h1>
+            </div>
+            <div class="text-xs font-medium bg-blue-50 text-blue-600 px-3 py-1 rounded-full">
+                System Architect Edition
+            </div>
+        </div>
+    </header>
 
-        // 图标组件 (SVG)
-        const Icons = {
-            Brain: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
-            Battery: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/></svg>,
-            Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-            Shield: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>,
-            Activity: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
-            ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            Play: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
-            CheckCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
-            Share2: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>,
-            X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-            Copy: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>,
-            Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        };
-
-        const HeartForceApp = () => {
-            const [step, setStep] = useState('intro'); 
-            const [currentQuestion, setCurrentQuestion] = useState(0);
-            const [answers, setAnswers] = useState({});
-            const [showSectionIntro, setShowSectionIntro] = useState(false);
-            const [showContactModal, setShowContactModal] = useState(false);
-            const [copied, setCopied] = useState(false);
-
-            // 题目配置
-            const questions = [
-                { id: 1, dimension: 'cognitive', sectionTitle: "第一部分：中枢指挥系统检测", sectionDesc: "评估前额叶皮层(PFC)的算力储备与类淋巴系统的清洗效率。", text: "早晨醒来后，你是否经常感到“脑雾”（Brain Fog），即便睡眠时间足够，大脑依然无法立刻清晰运转？", subtext: "神经指标：类淋巴系统代谢废物清除率" },
-                { id: 2, dimension: 'cognitive', text: "在处理复杂工作时，你是否发现自己很难维持超过25分钟的深度专注，很容易被弹窗或噪音打断？", subtext: "神经指标：背外侧前额叶(DLPFC)抑制功能" },
-                { id: 3, dimension: 'cognitive', text: "每天下午3-4点，你是否会经历剧烈的“认知崩溃”，感觉意志力彻底耗尽，无法再做任何决策？", subtext: "神经指标：脑葡萄糖代谢与自我损耗阈值" },
-                { id: 4, dimension: 'cognitive', text: "面临多个选项时，你是否经常陷入“决策瘫痪”，花费不成比例的时间去纠结？", subtext: "神经指标：腹内侧前额叶(VMPFC)价值整合效率" },
-                { id: 5, dimension: 'cognitive', text: "你是否经常感觉大脑像“过热的CPU”，明明很累却停不下来，睡前思绪纷飞难以入睡？", subtext: "神经指标：默认模式网络(DMN)过度活跃" },
-                { id: 6, dimension: 'drive', sectionTitle: "第二部分：动力引擎系统检测", sectionDesc: "评估多巴胺回路的敏感度与预测误差管理机制。", text: "你是否设定了很多目标，但绝大多数都卡在“第一步”，总感觉启动阻力巨大？", subtext: "神经指标：多巴胺基线水平与启动阈值" },
-                { id: 7, dimension: 'drive', text: "在刷短视频或资讯流时，你是否很难停下来，尽管内容并没有那么有趣，手指却在机械性滑动？", subtext: "神经指标：多巴胺奖赏回路的“成瘾性劫持”" },
-                { id: 8, dimension: 'drive', text: "完成一项高难度任务后，你的第一反应是“终于解脱了/好累”，而不是“太棒了/有成就感”？", subtext: "神经指标：正向预测误差(RPE)反馈缺失" },
-                { id: 9, dimension: 'drive', text: "你是否经常报复性熬夜，明知该睡了，却还在试图通过娱乐抓取最后一点“快乐”？", subtext: "神经指标：多巴胺代偿性寻求行为" },
-                { id: 10, dimension: 'drive', text: "对于需要长期努力才能获得回报的事（如健身、学习），你是否极难保持耐心，总想快速看到结果？", subtext: "神经指标：延迟满足能力" },
-                { id: 11, dimension: 'intuition', sectionTitle: "第三部分：身心雷达系统检测", sectionDesc: "评估内受觉(Interoception)精度与躯体标记信号。", text: "在忙碌时，你是否经常完全忽略身体的信号，直到饿得胃痛或憋尿很久才察觉？", subtext: "神经指标：内受觉(Interoception)迟钝" },
-                { id: 12, dimension: 'intuition', text: "当需要做直觉判断时，你是否感觉“心里没底”，完全听不到内心的声音，只能依赖逻辑列优缺点？", subtext: "神经指标：躯体标记(Somatic Marker)信号微弱" },
-                { id: 13, dimension: 'intuition', text: "你是否很难准确描述当下的情绪？（例如分不清是“焦虑”、“恐惧”还是“兴奋”，只觉得“难受”）", subtext: "神经指标：情绪粒度与岛叶(Insula)功能" },
-                { id: 14, dimension: 'intuition', text: "在压力巨大时，你是否会感觉身体“僵住”了，或者感觉自己像在看电影一样抽离（解离感）？", subtext: "神经指标：背侧迷走神经防御反应" },
-                { id: 15, dimension: 'intuition', text: "你是否经常出现查不出病因的躯体症状（如紧张性头痛、肠胃功能紊乱）？", subtext: "神经指标：身心断联与躯体化症状" },
-                { id: 16, dimension: 'immunity', sectionTitle: "第四部分：防御免疫系统检测", sectionDesc: "评估镜像神经元边界与迷走神经张力(HRV)。", text: "当身边的同事或家人情绪焦虑/愤怒时，你是否会瞬间被“传染”，感到胸闷或心慌？", subtext: "神经指标：镜像神经元过度活跃" },
-                { id: 17, dimension: 'immunity', text: "在经历一场冲突或突发压力后，你通常需要多久才能让心跳平复并恢复冷静？（选“总是”代表需要很久）", subtext: "神经指标：心率变异性(HRV)" },
-                { id: 18, dimension: 'immunity', text: "你是否经常在深夜反复回想白天发生的尴尬或冲突细节，陷入反刍思维无法自拔？", subtext: "神经指标：情绪残留与杏仁核过度激活" },
-                { id: 19, dimension: 'immunity', text: "在社交场合，你是否需要消耗巨大的能量去“察言观色”或维持假笑，导致回家后只想独处？", subtext: "神经指标：情绪劳动(Emotional Labor)负荷" },
-                { id: 20, dimension: 'immunity', text: "面对突发的变化或坏消息，你的第一反应通常是恐慌/崩溃，而不是“好吧，看看怎么解决”？", subtext: "神经指标：心理韧性与神经系统弹性" }
-            ];
-
-            const options = [
-                { value: 1, label: "几乎从不 (10%以下)" },
-                { value: 2, label: "偶尔发生 (30%左右)" },
-                { value: 3, label: "有时发生 (50%左右)" },
-                { value: 4, label: "经常发生 (70%左右)" },
-                { value: 5, label: "几乎总是 (90%以上)" }
-            ];
-
-            // 监听题目变化以显示板块介绍
-            useEffect(() => {
-                if (step === 'quiz') {
-                    const q = questions[currentQuestion];
-                    if (currentQuestion === 0 || questions[currentQuestion - 1].dimension !== q.dimension) {
-                        setShowSectionIntro(true);
-                    }
-                }
-            }, [currentQuestion, step]);
-
-            const handleAnswer = (value) => {
-                setAnswers({ ...answers, [questions[currentQuestion].dimension]: (answers[questions[currentQuestion].dimension] || 0) + value });
-                if (currentQuestion < questions.length - 1) {
-                    setCurrentQuestion(currentQuestion + 1);
-                } else {
-                    setStep('analyzing');
-                    setTimeout(() => setStep('result'), 2500);
-                }
-            };
-
-            const calculateScores = () => {
-                const raw = { cognitive: answers.cognitive || 0, drive: answers.drive || 0, intuition: answers.intuition || 0, immunity: answers.immunity || 0 };
-                const normalize = (val) => Math.round(Math.max(0, 100 - ((val - 5) / 20) * 100));
-                return {
-                    cognitive: normalize(raw.cognitive),
-                    drive: normalize(raw.drive),
-                    intuition: normalize(raw.intuition),
-                    immunity: normalize(raw.immunity),
-                    total: Math.round((normalize(raw.cognitive) + normalize(raw.drive) + normalize(raw.intuition) + normalize(raw.immunity)) / 4)
-                };
-            };
-
-            const scores = step === 'result' ? calculateScores() : null;
-
-            const getLevel = (score) => {
-                if (score >= 85) return { title: "神经系统：卓越态", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/50", desc: "心力如精密仪器般运转，具备极强抗压与创造潜能。" };
-                if (score >= 70) return { title: "神经系统：平衡态", color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/50", desc: "功能正常，但代偿机制正在掩盖隐形损耗。" };
-                if (score >= 50) return { title: "神经系统：警戒态", color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/50", desc: "前额叶与自主神经系统处于“过热”边缘，效率下降。" };
-                return { title: "神经系统：耗竭态", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/50", desc: "多巴胺劫持与皮质醇浸泡，心力接近“死机”，急需重启。" };
-            };
-
-            const getAdvice = (dim, score) => {
-                if (score > 80) return "状态良好，尝试挑战更高难度任务。";
-                if (dim === 'cognitive') return "建议：前额叶疲劳。需增加深度睡眠并尝试NSDR，重启类淋巴排毒系统。";
-                if (dim === 'drive') return "建议：多巴胺受体脱敏。建议48小时“多巴胺斋戒”，降低预测误差阈值。";
-                if (dim === 'intuition') return "建议：身心信号阻断。每日3次内受觉扫描，重建岛叶连接。";
-                if (dim === 'immunity') return "建议：交感神经过载。使用生理叹息呼吸法，激活迷走神经刹车。";
-            };
-
-            const handleCopy = () => {
-                // 简单的复制 fallback
-                const textArea = document.createElement("textarea");
-                textArea.value = "Martinzhang1983";
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                } catch (err) {
-                    alert('复制失败，请手动输入');
-                }
-                document.body.removeChild(textArea);
-            };
-
-            return (
-                <div className="max-w-md mx-auto min-h-screen flex flex-col relative bg-[#0f172a] text-slate-100 overflow-hidden">
-                     {/* 背景光效 */}
-                    <div className="fixed inset-0 pointer-events-none">
-                        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[80px]"></div>
-                        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[80px]"></div>
+    <!-- Intro Section -->
+    <main class="flex-grow max-w-3xl mx-auto px-4 py-8 w-full" id="assessment-area">
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-slate-100">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">睡眠-系统失衡初步筛查表</h2>
+            <p class="text-slate-500 text-sm mb-4">The R.N.G.M.E.E. Functional Sleep Audit</p>
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                <div class="flex items-start space-x-3">
+                    <i class="fa-solid fa-user-doctor text-blue-600 mt-1"></i>
+                    <div>
+                        <h3 class="font-bold text-blue-800 text-sm mb-1">架构师寄语</h3>
+                        <p class="text-blue-700 text-sm leading-relaxed">
+                            睡眠问题 ≠ 单一神经问题，而是多系统协同失衡的结果。<br>
+                            我们采用 <b>R.N.G.M.E.E. 全系统模型</b> 对您的生理硬件进行全维扫描。<br>
+                            请根据您<b>过去 1 个月</b>的真实身体感受，勾选以下症状。
+                        </p>
                     </div>
-
-                    {/* 顶部导航 */}
-                    <div className="relative z-10 p-4 flex justify-between items-center border-b border-slate-800 bg-[#0f172a]/90 backdrop-blur">
-                        <div className="flex items-center gap-2 text-purple-400 font-bold tracking-wide">
-                            <Icons.Brain /> 心力研习社
-                        </div>
-                        {step === 'quiz' && <span className="text-xs text-slate-400 font-mono">{currentQuestion + 1}/{questions.length}</span>}
-                    </div>
-
-                    <div className="flex-1 p-6 relative z-10 flex flex-col">
-                        
-                        {/* 首页 */}
-                        {step === 'intro' && (
-                            <div className="my-auto space-y-8 animate-fade-in">
-                                <div className="space-y-4">
-                                    <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs">
-                                        <Icons.Activity /> 专业版测评
-                                    </div>
-                                    <h1 className="text-4xl font-bold bg-gradient-to-br from-white to-slate-400 bg-clip-text text-transparent leading-tight">
-                                        神经-躯体<br/>心力能量审计
-                                    </h1>
-                                    <p className="text-slate-400 text-sm">基于前额叶、多巴胺与迷走神经理论的深度评估。</p>
-                                </div>
-                                <button onClick={() => setStep('quiz')} className="w-full py-4 bg-purple-600 rounded-xl font-bold text-lg shadow-lg shadow-purple-900/30 flex items-center justify-center gap-2 active:scale-95 transition-transform">
-                                    开始全系统扫描 <Icons.Play />
-                                </button>
-                            </div>
-                        )}
-
-                        {/* 答题页 */}
-                        {step === 'quiz' && (
-                            <div className="flex-1 flex flex-col relative">
-                                <div className="w-full bg-slate-800 h-1.5 rounded-full mb-6">
-                                    <div className="bg-purple-500 h-full transition-all duration-300" style={{width: `${(currentQuestion+1)/questions.length*100}%`}}></div>
-                                </div>
-                                
-                                {showSectionIntro ? (
-                                    <div className="absolute inset-0 bg-[#0f172a] z-20 flex flex-col justify-center items-center text-center animate-fade-in space-y-6">
-                                        <div className="p-4 rounded-full bg-slate-800 border border-slate-700">
-                                            {questions[currentQuestion].dimension === 'cognitive' ? <div className="text-yellow-400"><Icons.Brain /></div> :
-                                             questions[currentQuestion].dimension === 'drive' ? <div className="text-purple-400"><Icons.Zap /></div> :
-                                             questions[currentQuestion].dimension === 'intuition' ? <div className="text-blue-400"><Icons.Activity /></div> :
-                                             <div className="text-emerald-400"><Icons.Shield /></div>}
-                                        </div>
-                                        <div>
-                                            <h2 className="text-xl font-bold text-white mb-2">{questions[currentQuestion].sectionTitle}</h2>
-                                            <p className="text-sm text-slate-400 px-8">{questions[currentQuestion].sectionDesc}</p>
-                                        </div>
-                                        <button onClick={() => setShowSectionIntro(false)} className="px-8 py-2 bg-slate-800 border border-slate-700 rounded-full flex gap-2 items-center hover:bg-slate-700">
-                                            开始检测 <Icons.ArrowRight />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="flex-1 flex flex-col animate-slide-up">
-                                        <div className="mb-6 space-y-2">
-                                            <span className="text-xs font-bold text-purple-400 uppercase tracking-widest">{questions[currentQuestion].dimension}</span>
-                                            <h2 className="text-xl font-medium text-white leading-relaxed">{questions[currentQuestion].text}</h2>
-                                            <div className="inline-block px-3 py-1 bg-slate-800/50 rounded border border-slate-700/50 text-xs text-slate-400">
-                                                {questions[currentQuestion].subtext}
-                                            </div>
-                                        </div>
-                                        <div className="space-y-3 mt-auto pb-6">
-                                            {options.map(opt => (
-                                                <button key={opt.value} onClick={() => handleAnswer(opt.value)} className="w-full p-4 bg-slate-800/50 border border-slate-700 hover:border-purple-500 hover:bg-slate-800 rounded-xl text-left text-sm text-slate-300 transition-colors flex justify-between group active:scale-[0.98]">
-                                                    {opt.label}
-                                                    <div className="w-4 h-4 rounded-full border border-slate-600 group-hover:border-purple-500 group-hover:bg-purple-500"></div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* 分析页 */}
-                        {step === 'analyzing' && (
-                            <div className="flex-1 flex flex-col justify-center items-center space-y-6 animate-pulse">
-                                <div className="text-purple-500 animate-bounce"><Icons.Brain /></div>
-                                <div className="text-center space-y-2">
-                                    <h3 className="text-xl font-bold">正在生成神经图谱...</h3>
-                                    <p className="text-xs text-slate-500 font-mono">整合多巴胺回路数据...</p>
-                                    <p className="text-xs text-slate-500 font-mono">计算迷走神经张力...</p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* 结果页 */}
-                        {step === 'result' && scores && (
-                            <div className="animate-fade-in pb-12">
-                                <div className={`p-6 rounded-2xl border ${getLevel(scores.total).border} ${getLevel(scores.total).bg} text-center mb-6`}>
-                                    <div className="text-xs text-slate-400 uppercase tracking-widest mb-1">Heart Force Index</div>
-                                    <div className="text-5xl font-bold text-white mb-2">{scores.total} <span className="text-lg text-slate-500 font-normal">/100</span></div>
-                                    <div className={`text-lg font-bold ${getLevel(scores.total).color}`}>{getLevel(scores.total).title}</div>
-                                </div>
-
-                                <div className="h-64 w-full mb-6 relative -left-4">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
-                                            { subject: '认知', A: scores.cognitive, fullMark: 100 },
-                                            { subject: '驱动', A: scores.drive, fullMark: 100 },
-                                            { subject: '直觉', A: scores.intuition, fullMark: 100 },
-                                            { subject: '免疫', A: scores.immunity, fullMark: 100 },
-                                        ]}>
-                                            <PolarGrid stroke="#334155" />
-                                            <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                            <Radar name="HeartForce" dataKey="A" stroke="#8b5cf6" strokeWidth={3} fill="#8b5cf6" fillOpacity={0.4} />
-                                        </RadarChart>
-                                    </ResponsiveContainer>
-                                </div>
-
-                                <div className="space-y-4 mb-8">
-                                    <h3 className="text-xs font-bold text-slate-400 uppercase flex items-center gap-2"><Icons.Activity /> 维度解析</h3>
-                                    {Object.keys(scores).filter(k=>k!=='total').map(key => (
-                                        <div key={key} className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                                            <div className="flex justify-between mb-2">
-                                                <span className="font-bold text-slate-200 capitalize">{key === 'cognitive' ? '认知控制' : key === 'drive' ? '内在驱动' : key === 'intuition' ? '直觉导航' : '情绪免疫'}</span>
-                                                <span className={`font-mono ${scores[key] < 60 ? 'text-red-400' : 'text-emerald-400'}`}>{scores[key]}分</span>
-                                            </div>
-                                            <div className="text-xs text-slate-400 leading-relaxed pl-2 border-l-2 border-purple-500">
-                                                {getAdvice(key, scores[key])}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="bg-gradient-to-b from-purple-900/40 to-slate-900 border border-purple-500/30 rounded-2xl p-6 text-center space-y-4">
-                                    <h3 className="text-lg font-bold text-white">需要重塑你的“心力模型”？</h3>
-                                    <p className="text-xs text-slate-300">为您定制的《21天心力神经重塑计划》已就绪。</p>
-                                    <button onClick={() => setShowContactModal(true)} className="w-full py-3 bg-white text-purple-900 font-bold rounded-lg shadow-lg hover:bg-slate-100 transition-colors">
-                                        获取详细修复方案
-                                    </button>
-                                    <button onClick={() => alert("请截图本页并分享给朋友")} className="w-full flex items-center justify-center gap-2 text-xs text-slate-500 mt-2">
-                                        <Icons.Share2 /> 保存报告并分享
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* 弹窗 */}
-                    {showContactModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-sm animate-fade-in">
-                            <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 w-full max-w-sm relative animate-scale-up">
-                                <button onClick={() => setShowContactModal(false)} className="absolute top-4 right-4 text-slate-500"><Icons.X /></button>
-                                <div className="text-center space-y-4">
-                                    <div className="w-12 h-12 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto"><Icons.CheckCircle /></div>
-                                    <div>
-                                        <h3 className="text-xl font-bold text-white">获取定制方案</h3>
-                                        <p className="text-sm text-slate-400 mt-1">添加微信发送 <span className="text-purple-400 font-bold">“心力报告”</span></p>
-                                    </div>
-                                    <div className="bg-slate-900 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
-                                        <span className="font-mono text-lg font-bold text-slate-200 ml-2">Martinzhang1983</span>
-                                        <button onClick={handleCopy} className={`p-2 rounded ${copied ? 'bg-green-500/20 text-green-400' : 'bg-slate-700 text-white'}`}>
-                                            {copied ? <Icons.Check /> : <Icons.Copy />}
-                                        </button>
-                                    </div>
-                                    {copied && <p className="text-xs text-green-400">已复制！请打开微信添加好友</p>}
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </div>
-            );
-        };
+            </div>
+        </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<HeartForceApp />);
+        <form id="sleep-audit-form" onsubmit="calculateResults(event)">
+            
+            <!-- Dimension 1: R - Rhythm -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-1">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 font-bold">R</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">生物节律与激素轴 (Rhythm)</h3>
+                        <p class="text-xs text-slate-500">排查核心：HPA轴功能与皮质醇节律</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim1" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>晨起“启动”困难</b>：早晨醒来身体极沉，像没睡一样，上午长时间昏沉。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim1" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>夜间“回光返照”</b>：晚上10点后精神变好，思维活跃，比白天更清醒。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim1" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>长期夜醒/早醒</b>：经常在凌晨3-4点醒来后再难入睡，或睡眠很浅。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim1" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>假性熬夜</b>：身体很累但不想睡，非要拖到某个点才能勉强入睡。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim1" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>周末补觉依赖</b>：工作日睡不醒，周末必须睡到中午才能缓过来。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dimension 2: N - Neuro -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-2">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 font-bold">N</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">神经递质与压力系统 (Neuro)</h3>
+                        <p class="text-xs text-slate-500">排查核心：GABA/血清素状态与交感兴奋</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim2" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>入睡前思维奔逸</b>：躺下后脑子像开会，不由自主复盘或担忧。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim2" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>无法静止</b>：很难真正放松，休息时也感到内心紧迫感。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim2" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>声音/光线敏感</b>：睡眠极浅，微弱声响或光线变动都会引发惊跳。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim2" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>肌肉紧绷</b>：有磨牙习惯，或早晨醒来感觉下巴、肩颈僵硬酸痛。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim2" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>情绪波动</b>：近期感到更容易易怒、焦虑或情绪低落。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dimension 3: G - Gut -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-3">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mr-3 font-bold">G</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">肠道微生态 × 睡眠轴 (Gut)</h3>
+                        <p class="text-xs text-slate-500">排查核心：肠道炎症与脑雾</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim3" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>腹胀难眠</b>：晚饭后经常感到腹胀、打嗝或不适，影响入睡。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim3" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>食物敏感</b>：吃完面食、牛奶后，会感到脑雾加重、犯困或鼻塞。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim3" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>排便异常</b>：经常便秘、腹泻，或者大便不成形、粘马桶。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim3" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>情绪化进食</b>：压力大时特别渴望吃甜食、面包等高碳水食物。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim3" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>过敏体质</b>：有慢性鼻炎、湿疹或不明原因瘙痒（组胺高）。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dimension 4: M - Metabolism -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-4">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center mr-3 font-bold">M</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">代谢与慢病因素 (Metabolism)</h3>
+                        <p class="text-xs text-slate-500">排查核心：血糖波动与胰岛素抵抗</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim4" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>定时惊醒</b>：经常在凌晨1-3点准时醒来，且意识清醒。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim4" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>午后能量崩溃</b>：每天下午3-4点能量断崖式下跌，必须吃东西提神。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim4" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>夜间盗汗/心悸</b>：醒来时发现出汗，或者心跳很快，感到心慌。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim4" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>腹部肥胖</b>：四肢尚可，但肚子很大，减不下来（胰岛素抵抗）。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim4" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>打鼾/憋气</b>：睡觉打呼噜严重，或晨起嗓子极干、头痛。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dimension 5: E - Energy -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-5">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center mr-3 font-bold">E</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">微量营养与线粒体 (Energy)</h3>
+                        <p class="text-xs text-slate-500">排查核心：能量产能与营养缺乏</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim5" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>睡后无力</b>：即使睡够时长，醒来身体沉重，没有“充电”感。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim5" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>多梦/梦魇</b>：整晚做梦，醒来累（可能缺乏B6/镁）。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim5" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>眼皮/肌肉跳动</b>：眼皮跳、腿抽筋或肌肉抽动（缺镁）。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim5" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>脑雾严重</b>：记忆力下降，反应迟钝，难以集中注意力。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim5" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>手脚冰凉</b>：入睡前手脚怎么也捂不热，体温偏低。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Dimension 6: E - Environment -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-6">
+                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
+                    <div class="w-8 h-8 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center mr-3 font-bold">E</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">环境与行为因素 (Environment)</h3>
+                        <p class="text-xs text-slate-500">排查核心：睡眠卫生与物理干扰</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim6" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>睡前蓝光</b>：睡前1小时内还在刷手机、看平板，未开护眼模式。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim6" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>光线干扰</b>：卧室遮光差，路灯透进来，或有设备指示灯。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim6" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>温度不适</b>：经常因太热或太冷醒来，室温高于23℃。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim6" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>睡前饮食</b>：习惯喝酒助眠，或睡前2小时内吃夜宵。</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-wrapper cursor-pointer block">
+                        <input type="checkbox" name="dim6" value="1" class="hidden">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                                <i class="fa-solid fa-check text-xs text-white"></i>
+                            </div>
+                            <span class="text-sm text-slate-700 select-none"><b>作息不规律</b>：上床睡觉时间每天波动超过1小时。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mt-8 mb-12 text-center">
+                <button type="submit" class="btn-primary text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform w-full md:w-auto">
+                    诊断我的睡眠系统
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Result Section (Hidden initially) -->
+        <div id="results-area" class="hidden">
+            <div class="bg-white rounded-2xl p-8 shadow-xl border-t-4 border-blue-600 mb-8 result-card">
+                <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">系统诊断报告</h2>
+                <div class="text-center text-slate-500 mb-6 text-sm">Diagnosis ID: <span id="diag-id"></span></div>
+                
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-blue-500 pl-3">⚠️ 核心故障系统 (Core Failures)</h3>
+                    <div id="high-risk-list" class="space-y-4">
+                        <!-- Dynamic Content Here -->
+                    </div>
+                    <div id="no-risk-msg" class="hidden text-green-600 bg-green-50 p-4 rounded-lg text-center">
+                        <i class="fa-solid fa-circle-check mr-2"></i> 您的睡眠系统目前运行相对平衡，未发现明显的高危故障点。
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100 text-center">
+                    <h3 class="font-bold text-slate-800 mb-2 flex items-center justify-center">
+                        <i class="fa-solid fa-rocket text-blue-600 mr-2"></i> 
+                        下一步行动 (Next Action)
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-4">
+                        找到问题只是第一步。针对您检出的系统故障，我为您准备了针对性的<b>修复手册（含食谱与补剂清单）</b>。
+                    </p>
+                    <button id="cta-button" onclick="revealContact()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
+                        <i class="fa-solid fa-hand-pointer mr-2"></i> 点击获取干预方案
+                    </button>
+                    
+                    <!-- Hidden Contact Info -->
+                    <div id="contact-info" class="hidden mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200 animate-pulse">
+                        <p class="text-yellow-800 font-bold text-lg select-all">大张老师 微信号 Martinzhang1983</p>
+                        <p class="text-xs text-yellow-700 mt-1">（长按复制微信号添加）</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button onclick="resetAudit()" class="text-slate-400 text-sm underline hover:text-slate-600">重新测评</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-6 mt-auto">
+        <div class="max-w-3xl mx-auto px-4 text-center text-slate-400 text-xs">
+            <p>&copy; 2023 深度睡眠优化师. All rights reserved.</p>
+            <p class="mt-1">Disclaimer: 本测评仅供健康参考，不作为医疗诊断依据。</p>
+        </div>
+    </footer>
+
+    <script>
+        function calculateResults(e) {
+            e.preventDefault();
+            
+            // R.N.G.M.E.E. Logic config
+            const dimensions = [
+                { id: 'dim1', name: '生物节律紊乱型', code: 'Rhythm', icon: 'fa-clock', advice: '需重点进行光照管理（晨间见光）与 HPA 轴修复。' },
+                { id: 'dim2', name: '神经耗竭型', code: 'Neuro', icon: 'fa-brain', advice: '需重点进行神经调控（NSDR）与压力管理（补充镁）。' },
+                { id: 'dim3', name: '肠脑失衡型', code: 'Gut', icon: 'fa-bacteria', advice: '需重点进行抗炎饮食与菌群调节（忌麸质/乳制品）。' },
+                { id: 'dim4', name: '代谢危机型', code: 'Metabolism', icon: 'fa-bolt', advice: '需重点稳定血糖（睡前MCT油）与筛查呼吸暂停。' },
+                { id: 'dim5', name: '能量匮乏型', code: 'Energy', icon: 'fa-battery-quarter', advice: '需重点补充微量元素（B族/辅酶Q10）与线粒体充电。' },
+                { id: 'dim6', name: '环境干扰型', code: 'Environment', icon: 'fa-house', advice: '需重点进行卧室生物黑客改造（遮光/降温）。' }
+            ];
+
+            const formData = new FormData(e.target);
+            let highRisks = [];
+
+            dimensions.forEach((dim, index) => {
+                const count = formData.getAll(`dim${index + 1}`).length;
+                const card = document.getElementById(`dim-${index + 1}`);
+                
+                // Visual feedback on cards (optional)
+                if (count >= 3) {
+                    highRisks.push({ ...dim, count });
+                    card.classList.add('border-red-400');
+                } else {
+                    card.classList.remove('border-red-400');
+                }
+            });
+
+            // Render Results
+            const resultsArea = document.getElementById('results-area');
+            const formArea = document.getElementById('sleep-audit-form');
+            const highRiskList = document.getElementById('high-risk-list');
+            const noRiskMsg = document.getElementById('no-risk-msg');
+            
+            document.getElementById('diag-id').innerText = '#' + Math.floor(Math.random() * 10000);
+            highRiskList.innerHTML = '';
+
+            if (highRisks.length > 0) {
+                noRiskMsg.classList.add('hidden');
+                highRisks.forEach(risk => {
+                    const html = `
+                        <div class="bg-red-50 border border-red-100 rounded-lg p-4 flex items-start">
+                            <div class="bg-red-100 text-red-500 w-10 h-10 rounded-full flex items-center justify-center shrink-0 mr-4 mt-1">
+                                <i class="fa-solid ${risk.icon}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-red-700 text-md">${risk.name} (得分: ${risk.count}/5)</h4>
+                                <p class="text-red-600 text-sm mt-1 text-opacity-80">诊断提示：您的${risk.code}系统存在高风险失衡。</p>
+                                <div class="mt-2 text-sm text-slate-700 bg-white bg-opacity-60 p-2 rounded">
+                                    <span class="font-bold text-slate-800">架构师建议：</span> ${risk.advice}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    highRiskList.innerHTML += html;
+                });
+            } else {
+                noRiskMsg.classList.remove('hidden');
+            }
+
+            // UX Transition
+            formArea.classList.add('hidden');
+            document.getElementById('assessment-area').scrollIntoView({ behavior: 'smooth' });
+            resultsArea.classList.remove('hidden');
+        }
+
+        function resetAudit() {
+            document.getElementById('sleep-audit-form').reset();
+            document.getElementById('sleep-audit-form').classList.remove('hidden');
+            document.getElementById('results-area').classList.add('hidden');
+            document.getElementById('contact-info').classList.add('hidden'); // Hide contact info
+            document.getElementById('cta-button').classList.remove('hidden'); // Show button again
+            
+            // Clear styles
+            document.querySelectorAll('.dimension-card').forEach(card => {
+                card.classList.remove('border-red-400');
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function revealContact() {
+            document.getElementById('cta-button').classList.add('hidden');
+            document.getElementById('contact-info').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
