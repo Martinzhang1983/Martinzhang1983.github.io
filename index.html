@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R.N.G.M.E.E. 全系统睡眠效能测评 | 功能医学架构师</title>
+    <title>功能医学睡眠系统全维筛查表 | 深度睡眠优化师</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -11,49 +11,51 @@
         
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background-color: #f0f4f8;
-            color: #1e293b;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
 
         .dimension-card {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-left: 4px solid transparent;
         }
 
         .dimension-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .dimension-card.active {
-            border-left-color: #3b82f6;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
         .checkbox-wrapper input:checked + div {
-            background-color: #eff6ff;
-            border-color: #3b82f6;
-            color: #1e40af;
+            background-color: #f0fdf4;
+            border-color: #22c55e;
+            box-shadow: inset 0 0 0 1px #22c55e;
         }
 
         .checkbox-wrapper input:checked + div .check-icon {
             opacity: 1;
             transform: scale(1);
+            background-color: #22c55e;
+            border-color: #22c55e;
+        }
+        
+        .checkbox-wrapper div {
+            transition: all 0.2s ease-in-out;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
             transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
         }
 
         .result-card {
-            animation: slideUp 0.5s ease-out forwards;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
 
         @keyframes slideUp {
@@ -61,14 +63,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-        
-        /* Modal Styles */
-        .modal {
-            transition: opacity 0.3s ease;
-        }
-        .modal-content {
-            transition: transform 0.3s ease;
         }
     </style>
 </head>
@@ -79,28 +73,29 @@
         <div class="max-w-3xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <i class="fa-solid fa-dna text-blue-600 text-xl"></i>
-                <h1 class="font-bold text-lg text-slate-800">深度睡眠优化师</h1>
+                <h1 class="font-bold text-lg text-slate-800">深度睡眠优化师 2.0</h1>
             </div>
-            <div class="text-xs font-medium bg-blue-50 text-blue-600 px-3 py-1 rounded-full">
-                System Architect Edition
+            <div class="text-xs font-semibold bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full border border-indigo-100">
+                2024 功能医学版
             </div>
         </div>
     </header>
 
     <!-- Intro Section -->
     <main class="flex-grow max-w-3xl mx-auto px-4 py-8 w-full" id="assessment-area">
-        <div class="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-slate-100">
-            <h2 class="text-2xl font-bold text-slate-800 mb-2">睡眠-系统失衡初步筛查表</h2>
-            <p class="text-slate-500 text-sm mb-4">The R.N.G.M.E.E. Functional Sleep Audit</p>
-            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                <div class="flex items-start space-x-3">
-                    <i class="fa-solid fa-user-doctor text-blue-600 mt-1"></i>
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-sm border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">睡眠系统全维失衡初筛表</h2>
+            <p class="text-slate-500 text-sm mb-5">The Functional Medicine Sleep Systems Audit</p>
+            <div class="bg-blue-50 p-5 rounded-xl border border-blue-100">
+                <div class="flex items-start space-x-4">
+                    <div class="bg-blue-100 p-2 rounded-full mt-0.5">
+                        <i class="fa-solid fa-user-doctor text-blue-600"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-blue-800 text-sm mb-1">架构师寄语</h3>
-                        <p class="text-blue-700 text-sm leading-relaxed">
-                            睡眠问题 ≠ 单一神经问题，而是多系统协同失衡的结果。<br>
-                            我们采用 <b>R.N.G.M.E.E. 全系统模型</b> 对您的生理硬件进行全维扫描。<br>
-                            请根据您<b>过去 1 个月</b>的真实身体感受，勾选以下症状。
+                        <h3 class="font-bold text-blue-900 text-sm mb-2">系统架构师寄语</h3>
+                        <p class="text-blue-800 text-sm leading-relaxed">
+                            拒绝“唯时长论”和“单一神经视角”。睡眠障碍往往是生理、节律、肠道、代谢等多系统协同失衡的结果。<br><br>
+                            本测试基于 <b>2024功能医学六大核心评估维度</b> 设计。请根据您<b>过去 1 个月</b>的真实身体感受，如实勾选以下症状，找出您身体系统中的“漏水点”。
                         </p>
                     </div>
                 </div>
@@ -109,357 +104,369 @@
 
         <form id="sleep-audit-form" onsubmit="calculateResults(event)">
             
-            <!-- Dimension 1: R - Rhythm -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-1">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 font-bold">R</div>
+            <!-- Dimension 1: 睡眠结构与生物节律 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-200" id="dim-1">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">生物节律与激素轴 (Rhythm)</h3>
-                        <p class="text-xs text-slate-500">排查核心：HPA轴功能与皮质醇节律</p>
+                        <h3 class="font-bold text-slate-800 text-lg">一、 睡眠结构与生物节律</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：节律同步、光暴露、假性睡眠</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim1" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>晨起“启动”困难</b>：早晨醒来身体极沉，像没睡一样，上午长时间昏沉。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>入睡困难/易早醒</b>：躺下后超30分钟无法入睡，或凌晨醒来后无法再次入睡。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim1" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>夜间“回光返照”</b>：晚上10点后精神变好，思维活跃，比白天更清醒。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>作息“社会时差”严重</b>：工作日与周末起床时间差异巨大（超2小时），或频繁熬夜。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim1" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>长期夜醒/早醒</b>：经常在凌晨3-4点醒来后再难入睡，或睡眠很浅。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>假性睡眠</b>：明明在床上躺了很久，但感觉一直处于浅睡，频繁微觉醒，深睡极少。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim1" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>假性熬夜</b>：身体很累但不想睡，非要拖到某个点才能勉强入睡。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>光照匮乏</b>：早晨醒来后极少接触户外强自然光，导致白天昏沉，生物钟缺乏启动信号。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim1" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>周末补觉依赖</b>：工作日睡不醒，周末必须睡到中午才能缓过来。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>日间严重嗜睡</b>：即使晚上睡眠时长足够，白天依然精神萎靡，难以保持清醒。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Dimension 2: N - Neuro -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-2">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 font-bold">N</div>
+            <!-- Dimension 2: 神经内分泌与激素平衡 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-200" id="dim-2">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">神经递质与压力系统 (Neuro)</h3>
-                        <p class="text-xs text-slate-500">排查核心：GABA/血清素状态与交感兴奋</p>
+                        <h3 class="font-bold text-slate-800 text-lg">二、 神经内分泌与激素平衡</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：GABA/血清素、HPA轴、交感亢奋</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim2" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>入睡前思维奔逸</b>：躺下后脑子像开会，不由自主复盘或担忧。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>思维反刍无法关机</b>：躺下后大脑像高速运转的马达，充满焦虑和担忧，无法清空思绪。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim2" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>无法静止</b>：很难真正放松，休息时也感到内心紧迫感。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>交感神经长期亢奋</b>：感觉内心始终有一根弦紧绷，静息心率偏快，极难体验到彻底的放松。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim2" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>声音/光线敏感</b>：睡眠极浅，微弱声响或光线变动都会引发惊跳。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>情绪直接绑架睡眠</b>：近期频繁感到易怒、焦虑或抑郁，且情绪好坏直接决定当晚能否睡着。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim2" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>肌肉紧绷</b>：有磨牙习惯，或早晨醒来感觉下巴、肩颈僵硬酸痛。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>压力性心悸惊醒</b>：长期处于高压状态，半夜惊醒时常伴随心跳加速或莫名的恐慌感。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim2" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>情绪波动</b>：近期感到更容易易怒、焦虑或情绪低落。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>性激素波动干扰</b>：(限女性) 处于月经周期特定阶段或更年期，因孕酮/雌激素波动导致失眠加剧。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Dimension 3: G - Gut -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-3">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mr-3 font-bold">G</div>
+            <!-- Dimension 3: 肠道微生态与脑肠轴 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-200" id="dim-3">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-solid fa-bacteria"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">肠道微生态 × 睡眠轴 (Gut)</h3>
-                        <p class="text-xs text-slate-500">排查核心：肠道炎症与脑雾</p>
+                        <h3 class="font-bold text-slate-800 text-lg">三、 肠道微生态与脑肠轴</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：肠漏、食物不耐受、吸收不良</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim3" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>腹胀难眠</b>：晚饭后经常感到腹胀、打嗝或不适，影响入睡。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>夜间胃肠抗议</b>：睡前或夜间经常感到腹胀、反酸、打嗝，甚至因此影响入睡或被唤醒。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim3" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>食物敏感</b>：吃完面食、牛奶后，会感到脑雾加重、犯困或鼻塞。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>排便异常与脑雾并存</b>：长期便秘或腹泻交替，且经常感到严重“脑雾”（大脑不清醒、像隔着玻璃）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim3" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>排便异常</b>：经常便秘、腹泻，或者大便不成形、粘马桶。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>隐匿性过敏反应</b>：对特定食物（如面筋、乳制品）敏感，或有慢性鼻炎、湿疹等低度炎症表现。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim3" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>情绪化进食</b>：压力大时特别渴望吃甜食、面包等高碳水食物。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>消化吸收吃力</b>：吃高蛋白食物后感觉极难消化（胃酸/酶不足），可能导致合成睡眠递质的原料不足。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim3" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>过敏体质</b>：有慢性鼻炎、湿疹或不明原因瘙痒（组胺高）。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>情绪化进食发作</b>：在压力大或极度疲惫时，对高糖或高精制碳水食物有无法控制的渴望。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Dimension 4: M - Metabolism -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-4">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center mr-3 font-bold">M</div>
+            <!-- Dimension 4: 代谢、毒素与炎症负荷 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-200" id="dim-4">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">代谢与慢病因素 (Metabolism)</h3>
-                        <p class="text-xs text-slate-500">排查核心：血糖波动与胰岛素抵抗</p>
+                        <h3 class="font-bold text-slate-800 text-lg">四、 代谢、毒素与炎症负荷</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：胰岛素抵抗、呼吸暂停、全身炎症</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim4" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>定时惊醒</b>：经常在凌晨1-3点准时醒来，且意识清醒。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>呼吸暂停/夜间缺氧</b>：睡觉打鼾声大，曾被伴侣发现憋气，晨起常感口干舌燥或头痛。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim4" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>午后能量崩溃</b>：每天下午3-4点能量断崖式下跌，必须吃东西提神。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>腹部肥胖与餐后困倦</b>：存在腰腹部赘肉难减，且午餐/晚餐后经常感到极度昏沉（胰岛素抵抗特征）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim4" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>夜间盗汗/心悸</b>：醒来时发现出汗，或者心跳很快，感到心慌。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>夜间低血糖惊醒</b>：常在凌晨因饥饿感醒来，有时伴有出冷汗、手抖，需进食才能再次安睡。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim4" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>腹部肥胖</b>：四肢尚可，但肚子很大，减不下来（胰岛素抵抗）。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>代谢性频繁夜尿</b>：夜间因尿意醒来超过2次，打断睡眠（已排除睡前大量饮水的原因）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim4" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>打鼾/憋气</b>：睡觉打呼噜严重，或晨起嗓子极干、头痛。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>不明原因夜间盗汗</b>：非环境温度原因，睡觉时身体异常出汗，甚至弄湿睡衣（提示体内潜在炎症或排毒负荷重）。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Dimension 5: E - Energy -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-5">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center mr-3 font-bold">E</div>
+            <!-- Dimension 5: 微量营养与线粒体功能 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-200" id="dim-5">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-solid fa-battery-half"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">微量营养与线粒体 (Energy)</h3>
-                        <p class="text-xs text-slate-500">排查核心：能量产能与营养缺乏</p>
+                        <h3 class="font-bold text-slate-800 text-lg">五、 微量营养与线粒体功能</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：辅酶缺乏、线粒体代谢低下</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim5" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>睡后无力</b>：即使睡够时长，醒来身体沉重，没有“充电”感。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>神经肌肉高度紧张</b>：睡觉时经常小腿抽筋，或白天频繁眼皮跳动、肌肉紧绷（强烈提示缺镁）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim5" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>多梦/梦魇</b>：整晚做梦，醒来累（可能缺乏B6/镁）。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>睡不解乏如电池老化</b>：哪怕睡了很久，醒来依然四肢沉重，毫无“满电复活”感（线粒体供能故障）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim5" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>眼皮/肌肉跳动</b>：眼皮跳、腿抽筋或肌肉抽动（缺镁）。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>彻夜多梦易惊</b>：感觉一整晚都在做纷乱的梦，睡眠质量极差（可能缺乏B族等神经递质辅酶）。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim5" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>脑雾严重</b>：记忆力下降，反应迟钝，难以集中注意力。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>运动后恢复极慢</b>：稍微进行体力活动，疲劳感就会持续数天，身体能量生产跟不上消耗。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim5" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>手脚冰凉</b>：入睡前手脚怎么也捂不热，体温偏低。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>末梢循环终年冰凉</b>：无论穿多少，手脚常常冰凉，导致晚上在被窝里很难积聚热量入睡。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Dimension 6: E - Environment -->
-            <div class="dimension-card bg-white rounded-xl p-6 mb-6 shadow-sm border border-slate-100" id="dim-6">
-                <div class="flex items-center mb-4 border-b border-slate-100 pb-3">
-                    <div class="w-8 h-8 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center mr-3 font-bold">E</div>
+            <!-- Dimension 6: 环境与行为习惯 -->
+            <div class="dimension-card bg-white rounded-xl p-6 mb-8 shadow-sm border border-slate-200" id="dim-6">
+                <div class="flex items-center mb-5 border-b border-slate-100 pb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center mr-4 text-lg">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
                     <div>
-                        <h3 class="font-bold text-slate-800">环境与行为因素 (Environment)</h3>
-                        <p class="text-xs text-slate-500">排查核心：睡眠卫生与物理干扰</p>
+                        <h3 class="font-bold text-slate-800 text-lg">六、 环境与行为习惯</h3>
+                        <p class="text-xs text-slate-500 mt-1">排查核心：卧室物理干扰、睡前行为模式</p>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim6" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>睡前蓝光</b>：睡前1小时内还在刷手机、看平板，未开护眼模式。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>卧室光/声污染</b>：睡眠环境无法做到“伸手不见五指”（漏光/指示灯），或经常受突发噪音惊扰。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim6" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>光线干扰</b>：卧室遮光差，路灯透进来，或有设备指示灯。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>高强度蓝光直射</b>：睡前1小时内习惯性长时间刷手机、看平板，且未采取任何防蓝光措施。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim6" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>温度不适</b>：经常因太热或太冷醒来，室温高于23℃。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>温湿度控制失当</b>：卧室温度经常过高（超过23℃）或过于闷热，导致半夜身体需翻身散热而醒来。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim6" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>睡前饮食</b>：习惯喝酒助眠，或睡前2小时内吃夜宵。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>睡前饮食/刺激物</b>：习惯在下午或傍晚摄入咖啡/浓茶，或睡前习惯性饮酒、吃难消化的大量宵夜。</span>
                         </div>
                     </label>
                     <label class="checkbox-wrapper cursor-pointer block">
                         <input type="checkbox" name="dim6" value="1" class="hidden">
-                        <div class="border border-slate-200 rounded-lg p-3 flex items-center transition-colors hover:bg-slate-50">
-                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 flex items-center justify-center bg-white check-icon opacity-20 transform scale-75 transition-all">
+                        <div class="border border-slate-200 rounded-lg p-3 flex items-start hover:bg-slate-50">
+                            <div class="w-5 h-5 rounded border border-slate-300 mr-3 mt-0.5 flex items-center justify-center bg-white check-icon opacity-30 transform scale-90">
                                 <i class="fa-solid fa-check text-xs text-white"></i>
                             </div>
-                            <span class="text-sm text-slate-700 select-none"><b>作息不规律</b>：上床睡觉时间每天波动超过1小时。</span>
+                            <span class="text-sm text-slate-700 select-none flex-1 leading-snug"><b>日间驱动力匮乏</b>：白天几乎不进行体育锻炼，长时间久坐，导致身体没有积累足够的“睡眠压力”。</span>
                         </div>
                     </label>
                 </div>
             </div>
 
             <div class="mt-8 mb-12 text-center">
-                <button type="submit" class="btn-primary text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform w-full md:w-auto">
-                    诊断我的睡眠系统
+                <button type="submit" class="btn-primary text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg w-full md:w-auto">
+                    <i class="fa-solid fa-microscope mr-2"></i> 生成全系统诊断报告
                 </button>
             </div>
 
@@ -467,51 +474,57 @@
 
         <!-- Result Section (Hidden initially) -->
         <div id="results-area" class="hidden">
-            <div class="bg-white rounded-2xl p-8 shadow-xl border-t-4 border-blue-600 mb-8 result-card">
-                <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">系统诊断报告</h2>
-                <div class="text-center text-slate-500 mb-6 text-sm">Diagnosis ID: <span id="diag-id"></span></div>
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-xl border-t-4 border-blue-600 mb-8 result-card">
+                <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">系统失衡诊断报告</h2>
+                <div class="text-center text-slate-500 mb-8 text-sm tracking-wider">Evaluation ID: <span id="diag-id" class="font-mono"></span></div>
                 
                 <div class="mb-8">
-                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-l-4 border-blue-500 pl-3">⚠️ 核心故障系统 (Core Failures)</h3>
+                    <h3 class="text-lg font-bold text-slate-800 mb-5 border-l-4 border-red-500 pl-3">🚨 高风险失衡维度 (Critical Systems)</h3>
                     <div id="high-risk-list" class="space-y-4">
                         <!-- Dynamic Content Here -->
                     </div>
-                    <div id="no-risk-msg" class="hidden text-green-600 bg-green-50 p-4 rounded-lg text-center">
-                        <i class="fa-solid fa-circle-check mr-2"></i> 您的睡眠系统目前运行相对平衡，未发现明显的高危故障点。
+                    <div id="no-risk-msg" class="hidden text-emerald-700 bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center">
+                        <i class="fa-solid fa-shield-halved text-3xl mb-2 text-emerald-500"></i>
+                        <p class="font-bold text-lg">系统运转良好</p>
+                        <p class="text-sm mt-1">根据自测，您的睡眠系统暂未出现明显的高危结构性故障。请继续保持当前的健康生活方式。</p>
                     </div>
                 </div>
 
-                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100 text-center">
-                    <h3 class="font-bold text-slate-800 mb-2 flex items-center justify-center">
-                        <i class="fa-solid fa-rocket text-blue-600 mr-2"></i> 
-                        下一步行动 (Next Action)
+                <div class="bg-slate-50 rounded-xl p-6 md:p-8 border border-slate-200 text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-lg mb-3">
+                        架构师下一步干预方案
                     </h3>
-                    <p class="text-slate-600 text-sm mb-4">
-                        找到问题只是第一步。针对您检出的系统故障，我为您准备了针对性的<b>修复手册（含食谱与补剂清单）</b>。
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+                        基于功能医学协议，我们不建议盲目使用药物掩盖症状。<br>针对您上方亮红灯的系统模块，我已为您准备了包含 <b>对应数字工具（如NSDR调频、抗炎食谱、精准补剂红黑榜）</b> 的专属系统修复指南。
                     </p>
-                    <button id="cta-button" onclick="revealContact()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
-                        <i class="fa-solid fa-hand-pointer mr-2"></i> 点击获取干预方案
+                    <button id="cta-button" onclick="revealContact()" class="w-full md:w-3/4 mx-auto bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-md flex items-center justify-center text-sm md:text-base">
+                        <i class="fa-solid fa-unlock-keyhole mr-2"></i> 解锁我的系统修复地图
                     </button>
                     
                     <!-- Hidden Contact Info -->
-                    <div id="contact-info" class="hidden mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200 animate-pulse">
-                        <p class="text-yellow-800 font-bold text-lg select-all">大张老师 微信号 Martinzhang1983</p>
-                        <p class="text-xs text-yellow-700 mt-1">（长按复制微信号添加）</p>
+                    <div id="contact-info" class="hidden mt-4 bg-amber-50 p-5 rounded-xl border border-amber-200">
+                        <p class="text-amber-900 font-bold text-lg select-all mb-1">大张老师 微信号 Martinzhang1983</p>
+                        <p class="text-sm text-amber-700 font-medium">长按复制微信号，添加获取详细报告解读</p>
                     </div>
                 </div>
             </div>
             
             <div class="text-center">
-                <button onclick="resetAudit()" class="text-slate-400 text-sm underline hover:text-slate-600">重新测评</button>
+                <button onclick="resetAudit()" class="text-slate-400 text-sm font-medium hover:text-slate-600 transition-colors flex items-center justify-center mx-auto">
+                    <i class="fa-solid fa-rotate-right mr-1.5"></i> 重新进行评估
+                </button>
             </div>
         </div>
 
     </main>
 
-    <footer class="bg-white border-t border-slate-100 py-6 mt-auto">
+    <footer class="bg-white py-6 mt-auto">
         <div class="max-w-3xl mx-auto px-4 text-center text-slate-400 text-xs">
-            <p>&copy; 2023 深度睡眠优化师. All rights reserved.</p>
-            <p class="mt-1">Disclaimer: 本测评仅供健康参考，不作为医疗诊断依据。</p>
+            <p>&copy; 2024 深度睡眠优化师 | D.E.E.P. 系统效能</p>
+            <p class="mt-2 text-slate-300">免责声明：本问卷基于功能医学评估框架开发，旨在提供生活方式与生理失衡线索，非临床医疗诊断。如有严重躯体疾病，请及时就医。</p>
         </div>
     </footer>
 
@@ -519,29 +532,29 @@
         function calculateResults(e) {
             e.preventDefault();
             
-            // R.N.G.M.E.E. Logic config
+            // R.N.G.M.E.E. Logic config based on functional medicine standard
             const dimensions = [
-                { id: 'dim1', name: '生物节律紊乱型', code: 'Rhythm', icon: 'fa-clock', advice: '需重点进行光照管理（晨间见光）与 HPA 轴修复。' },
-                { id: 'dim2', name: '神经耗竭型', code: 'Neuro', icon: 'fa-brain', advice: '需重点进行神经调控（NSDR）与压力管理（补充镁）。' },
-                { id: 'dim3', name: '肠脑失衡型', code: 'Gut', icon: 'fa-bacteria', advice: '需重点进行抗炎饮食与菌群调节（忌麸质/乳制品）。' },
-                { id: 'dim4', name: '代谢危机型', code: 'Metabolism', icon: 'fa-bolt', advice: '需重点稳定血糖（睡前MCT油）与筛查呼吸暂停。' },
-                { id: 'dim5', name: '能量匮乏型', code: 'Energy', icon: 'fa-battery-quarter', advice: '需重点补充微量元素（B族/辅酶Q10）与线粒体充电。' },
-                { id: 'dim6', name: '环境干扰型', code: 'Environment', icon: 'fa-house', advice: '需重点进行卧室生物黑客改造（遮光/降温）。' }
+                { id: 'dim1', name: '睡眠结构与生物节律失衡', icon: 'fa-clock', color: 'indigo', advice: '必须重塑作息“锚点”。优先进行晨间高强度光照暴露（激活CAR），修复皮质醇-褪黑素天然节律。' },
+                { id: 'dim2', name: '神经内分泌紊乱与耗竭', icon: 'fa-brain', color: 'purple', advice: '需强化日间压力管理与神经调控。建议睡前引入 NSDR (非睡眠深度休息) 强制切断DMN反刍，并评估补充 GABA/血清素 合成辅酶。' },
+                { id: 'dim3', name: '肠脑轴微生态失调', icon: 'fa-bacteria', color: 'green', advice: '大脑的火源在腹部。需执行抗炎饮食（考虑排查麸质/乳制品不耐受），修复肠漏，补充特定产短链脂肪酸的益生菌群。' },
+                { id: 'dim4', name: '代谢、毒素与炎症过载', icon: 'fa-fire-flame-curved', color: 'red', advice: '警惕夜间“能源危机”。需干预胰岛素抵抗，睡前补充优质脂肪（如MCT油）锚定夜间血糖，并筛查可能的睡眠呼吸暂停（OSA）。' },
+                { id: 'dim5', name: '微量营养与线粒体枯竭', icon: 'fa-battery-half', color: 'teal', advice: '你的“细胞电池”老化。需精准补充关键矿物质（如甘氨酸镁缓解紧绷）与线粒体营养（如活性B族、辅酶Q10）提升深睡修复力。' },
+                { id: 'dim6', name: '环境物理干扰', icon: 'fa-house', color: 'gray', advice: '环境即指令。请严格落实卧室光/温/声的生物黑客改造（100%遮光，18-21℃室温），执行睡前“电子屏幕断舍离”。' }
             ];
 
             const formData = new FormData(e.target);
             let highRisks = [];
 
+            // Condition: 2 or more checked means high risk for that dimension
             dimensions.forEach((dim, index) => {
                 const count = formData.getAll(`dim${index + 1}`).length;
                 const card = document.getElementById(`dim-${index + 1}`);
                 
-                // Visual feedback on cards (optional)
-                if (count >= 3) {
+                if (count >= 2) {
                     highRisks.push({ ...dim, count });
-                    card.classList.add('border-red-400');
+                    card.classList.add('border-red-300', 'bg-red-50/30');
                 } else {
-                    card.classList.remove('border-red-400');
+                    card.classList.remove('border-red-300', 'bg-red-50/30');
                 }
             });
 
@@ -551,22 +564,29 @@
             const highRiskList = document.getElementById('high-risk-list');
             const noRiskMsg = document.getElementById('no-risk-msg');
             
-            document.getElementById('diag-id').innerText = '#' + Math.floor(Math.random() * 10000);
+            // Gen Random ID like #FM-9341
+            document.getElementById('diag-id').innerText = 'FM-' + Math.floor(1000 + Math.random() * 9000);
             highRiskList.innerHTML = '';
 
             if (highRisks.length > 0) {
                 noRiskMsg.classList.add('hidden');
                 highRisks.forEach(risk => {
                     const html = `
-                        <div class="bg-red-50 border border-red-100 rounded-lg p-4 flex items-start">
-                            <div class="bg-red-100 text-red-500 w-10 h-10 rounded-full flex items-center justify-center shrink-0 mr-4 mt-1">
-                                <i class="fa-solid ${risk.icon}"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-red-700 text-md">${risk.name} (得分: ${risk.count}/5)</h4>
-                                <p class="text-red-600 text-sm mt-1 text-opacity-80">诊断提示：您的${risk.code}系统存在高风险失衡。</p>
-                                <div class="mt-2 text-sm text-slate-700 bg-white bg-opacity-60 p-2 rounded">
-                                    <span class="font-bold text-slate-800">架构师建议：</span> ${risk.advice}
+                        <div class="bg-white border border-red-200 shadow-sm rounded-xl p-5 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1.5 h-full bg-${risk.color}-500"></div>
+                            <div class="flex items-start">
+                                <div class="bg-${risk.color}-50 text-${risk.color}-600 w-10 h-10 rounded-full flex items-center justify-center shrink-0 mr-4 mt-1 border border-${risk.color}-100">
+                                    <i class="fa-solid ${risk.icon} text-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="font-bold text-slate-800 text-[15px]">${risk.name}</h4>
+                                        <span class="bg-red-100 text-red-700 text-[10px] px-2 py-0.5 rounded font-bold">高风险 (${risk.count}/5)</span>
+                                    </div>
+                                    <div class="mt-3 text-sm text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100 leading-relaxed">
+                                        <span class="font-bold text-slate-700"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> 架构师修复建议：</span> 
+                                        ${risk.advice}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -579,20 +599,22 @@
 
             // UX Transition
             formArea.classList.add('hidden');
-            document.getElementById('assessment-area').scrollIntoView({ behavior: 'smooth' });
-            resultsArea.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                resultsArea.classList.remove('hidden');
+            }, 300);
         }
 
         function resetAudit() {
             document.getElementById('sleep-audit-form').reset();
             document.getElementById('sleep-audit-form').classList.remove('hidden');
             document.getElementById('results-area').classList.add('hidden');
-            document.getElementById('contact-info').classList.add('hidden'); // Hide contact info
-            document.getElementById('cta-button').classList.remove('hidden'); // Show button again
+            document.getElementById('contact-info').classList.add('hidden');
+            document.getElementById('cta-button').classList.remove('hidden');
             
-            // Clear styles
+            // Clear error styles
             document.querySelectorAll('.dimension-card').forEach(card => {
-                card.classList.remove('border-red-400');
+                card.classList.remove('border-red-300', 'bg-red-50/30');
             });
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -601,6 +623,10 @@
         function revealContact() {
             document.getElementById('cta-button').classList.add('hidden');
             document.getElementById('contact-info').classList.remove('hidden');
+            document.getElementById('contact-info').classList.add('animate-pulse');
+            setTimeout(() => {
+                document.getElementById('contact-info').classList.remove('animate-pulse');
+            }, 1500);
         }
     </script>
 </body>
